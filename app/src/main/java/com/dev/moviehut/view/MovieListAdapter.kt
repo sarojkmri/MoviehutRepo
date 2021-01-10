@@ -25,7 +25,6 @@ class MovieAdapter(private val context: Context, private var movies: List<Movie>
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nameTextView: TextView = itemView.nameTextView
         var dateTextView: TextView = itemView.dateTextView
-        var voteTextView: TextView = itemView.voteTextView
         var movieImageView: ImageView = itemView.movieImageView
     }
 
@@ -41,12 +40,10 @@ class MovieAdapter(private val context: Context, private var movies: List<Movie>
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val movie = movies.get(position)
+        val movie = movies[position]
         movie.let { currMovie ->
             holder.nameTextView.text = currMovie.title
             holder.dateTextView.text = currMovie.releaseDate
-            holder.voteTextView.text = currMovie.voteAverage.toString()
-
             Glide.with(context)
                 .load(EndPoints.PHOTO_BASE_URL + currMovie.posterPath)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)

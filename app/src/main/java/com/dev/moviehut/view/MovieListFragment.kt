@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dev.moviehut.R
 import com.dev.moviehut.data.model.Movie
 import com.dev.moviehut.utils.MovieListUtil
@@ -16,6 +19,7 @@ import com.dev.moviehut.utils.Status
 import com.dev.moviehut.viewmodel.MovieViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.movie_list_main.*
+
 
 class MovieListFragment : Fragment() {
     private val moviesViewModel: MovieViewModel by activityViewModels()
@@ -43,6 +47,9 @@ class MovieListFragment : Fragment() {
                 moviesViewModel.setCurrentMovie(movie)
             }
         )
+        val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, 3)
+        moviesRecycleView.layoutManager = mLayoutManager
+        moviesRecycleView.itemAnimator = DefaultItemAnimator()
         moviesRecycleView.adapter = adapter
 
 
