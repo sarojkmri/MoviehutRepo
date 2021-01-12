@@ -93,8 +93,16 @@ class MovieListFragment : Fragment() {
 
     private fun getMoviesBySpinnerPosition(movieListPosition: Int, isRefresh: Boolean = false) {
         var list = MovieListUtil.MovieList.GET_TOP_RATED
-        if (movieLists[movieListPosition] == getString(R.string.get_popular)) {
-            list = MovieListUtil.MovieList.GET_POPULAR
+        when {
+            movieLists[movieListPosition] == getString(R.string.get_popular) -> {
+                list = MovieListUtil.MovieList.GET_POPULAR
+            }
+            movieLists[movieListPosition] == getString(R.string.get_playing) -> {
+                list = MovieListUtil.MovieList.GET_NOW_PLAYING
+            }
+            movieLists[movieListPosition] == getString(R.string.get_latest) -> {
+                list = MovieListUtil.MovieList.GET_LATEST
+            }
         }
 
         if (isRefresh) {

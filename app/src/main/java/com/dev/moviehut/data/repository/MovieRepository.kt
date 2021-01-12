@@ -59,6 +59,12 @@ class MovieRepository @Inject constructor(private val networkService: NetworkSer
     }
 
     fun getMovies(movieList: MovieListUtil.MovieList) {
+        val dbObservable = databaseService.movieDao().getAll()
+            .flatMap { movies ->
+                val filteredList = movies.filter { it.movieList.contains(movieList) }
+
+                return@flatMap Single.just(filteredList).toObservable()
+            }
         val moviesObservable: Single<MovieData> =
             when (movieList) {
                 MovieListUtil.MovieList.GET_TOP_RATED ->
@@ -79,13 +85,6 @@ class MovieRepository @Inject constructor(private val networkService: NetworkSer
                 movies.forEach { it.movieList.add(movieList) }
                 databaseService.movieDao().insertAll(movies)
             }
-        val dbObservable = databaseService.movieDao().getAll()
-            .flatMap { movies ->
-                val filteredList = movies.filter { it.movieList.contains(movieList) }
-
-                return@flatMap Single.just(filteredList).toObservable()
-            }
-
         observeData(dbObservable, apiObservable)
     }
 
@@ -115,7 +114,11 @@ class MovieRepository @Inject constructor(private val networkService: NetworkSer
                         updateResponse(Status.SUCCESS, it)
                     },
                     {
-                        updateResponse(Status.ERROR, null, it.localizedMessage)
+                        updateResponse(
+                            Status.ERROR,
+                            null,
+                            MoviehutApplication.application.getString(R.string.no_data_available)
+                        )
                     }
 
                 ))
