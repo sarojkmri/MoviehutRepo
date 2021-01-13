@@ -1,29 +1,13 @@
-# README #
+                                                Moviehut
+# About App 
+Moviehut is collections of movies using TMDB api’s, where use can filter the movies based on 
+Top rated movies
+Most popular movies
+In Theaters/Latest movies
+Coming soon movies
+ 
+User can also see the movie details like rating, description and year of release onclick of any movie. 
+Users are also able to see a list of movies and details in offline mode.
 
-This README would normally document whatever steps are necessary to get your application up and running.
 
-### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
