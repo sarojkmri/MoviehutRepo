@@ -35,29 +35,6 @@ class MovieRepository @Inject constructor(private val networkService: NetworkSer
         ).build()
     }
 
-
-    fun refresh(movieList: MovieListUtil.MovieList) {
-        if (networkService.isNetworkAvailable()) {
-            compositeDisposable.add(
-                Observable.just(Unit)
-                    .doOnNext {
-                        databaseService.movieDao().deleteAll()
-                    }
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        getMovies(movieList)
-                    }
-            )
-        } else {
-            updateResponse(
-                Status.ERROR,
-                null,
-                MoviehutApplication.application.getString(R.string.no_internet_connection)
-            )
-        }
-    }
-
     fun getMovies(movieList: MovieListUtil.MovieList) {
         val dbObservable = databaseService.movieDao().getAll()
             .flatMap { movies ->
@@ -85,6 +62,7 @@ class MovieRepository @Inject constructor(private val networkService: NetworkSer
                 movies.forEach { it.movieList.add(movieList) }
                 databaseService.movieDao().insertAll(movies)
             }
+
         observeData(dbObservable, apiObservable)
     }
 
@@ -97,12 +75,15 @@ class MovieRepository @Inject constructor(private val networkService: NetworkSer
         movies.value = responseLoading
     }
 
-    private fun observeData(db: Observable<List<Movie>>, remote: Observable<List<Movie>>) {
+    private fun observeData(
+        localDataSource: Observable<List<Movie>>,
+        remoteDataSource: Observable<List<Movie>>
+    ) {
         compositeDisposable.add(
-            Observable.concat(db, remote)
+            Observable.concat(localDataSource, remoteDataSource)
                 .filter { it.isNotEmpty() }
-                .timeout(100, TimeUnit.MILLISECONDS)
-                .onErrorResumeNext(remote)
+                .timeout(200, TimeUnit.MILLISECONDS)
+                .onErrorResumeNext(remoteDataSource)
                 .firstElement()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -117,7 +98,7 @@ class MovieRepository @Inject constructor(private val networkService: NetworkSer
                         updateResponse(
                             Status.ERROR,
                             null,
-                            MoviehutApplication.application.getString(R.string.no_data_available)
+                            MoviehutApplication.application.getString(R.string.no_internet_connection)
                         )
                     }
 

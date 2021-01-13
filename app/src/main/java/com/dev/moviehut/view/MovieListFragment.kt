@@ -52,11 +52,6 @@ class MovieListFragment : Fragment() {
         moviesRecycleView.itemAnimator = DefaultItemAnimator()
         moviesRecycleView.adapter = adapter
 
-
-        swipeRefreshLayout.setOnRefreshListener {
-            getMoviesBySpinnerPosition(movieListSpinner.selectedItemPosition, true)
-        }
-
         val adapter = ArrayAdapter(
             requireContext(),
             R.layout.support_simple_spinner_dropdown_item, movieLists
@@ -91,7 +86,7 @@ class MovieListFragment : Fragment() {
         })
     }
 
-    private fun getMoviesBySpinnerPosition(movieListPosition: Int, isRefresh: Boolean = false) {
+    private fun getMoviesBySpinnerPosition(movieListPosition: Int) {
         var list = MovieListUtil.MovieList.GET_TOP_RATED
         when {
             movieLists[movieListPosition] == getString(R.string.get_popular) -> {
@@ -104,13 +99,7 @@ class MovieListFragment : Fragment() {
                 list = MovieListUtil.MovieList.GET_LATEST
             }
         }
-
-        if (isRefresh) {
-            moviesViewModel.refresh(list)
-        } else {
-            moviesViewModel.getMovies(list)
-        }
-
+        moviesViewModel.getMovies(list)
     }
 
     private fun updateMovieList(movies: List<Movie>) {

@@ -23,10 +23,6 @@ class MovieViewModel : ViewModel() {
         movies = repository.movies
     }
 
-    fun refresh(list: MovieListUtil.MovieList) {
-        repository.refresh(list)
-    }
-
     fun getMovies(list: MovieListUtil.MovieList) {
         repository.getMovies(list)
     }

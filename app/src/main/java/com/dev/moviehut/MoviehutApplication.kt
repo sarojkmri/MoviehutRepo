@@ -2,6 +2,7 @@ package com.dev.moviehut
 
 import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
 import androidx.multidex.MultiDex
 import com.dev.moviehut.di.ApplicationComponent
 import com.dev.moviehut.di.ApplicationModule
