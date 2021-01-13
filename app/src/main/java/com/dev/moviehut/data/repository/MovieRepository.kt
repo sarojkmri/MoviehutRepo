@@ -98,11 +98,19 @@ class MovieRepository @Inject constructor(private val networkService: NetworkSer
                         updateResponse(
                             Status.ERROR,
                             null,
-                            MoviehutApplication.application.getString(R.string.no_internet_connection)
+                            checkForError(it)
                         )
                     }
 
                 ))
+    }
+
+    private fun checkForError(it: Throwable): String {
+        return if (!networkService.isNetworkAvailable())
+            MoviehutApplication.application.getString(R.string.no_internet_connection)
+        else
+            it.message.toString()
+
     }
 
     fun clear() {
