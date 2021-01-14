@@ -4,6 +4,7 @@ import com.dev.moviehut.BuildConfig.BASE_URL
 import com.dev.moviehut.data.remote.NetworkApi
 import com.dev.moviehut.data.remote.NetworkService
 import com.dev.moviehut.data.repository.MovieRepository
+import com.dev.moviehut.viewmodel.MovieViewModel
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -34,6 +35,12 @@ class ApplicationModule() {
     @Provides
     fun provideMoviesRepository(apiService: NetworkService): MovieRepository {
         return MovieRepository(apiService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMovieViewModel(): MovieViewModel {
+        return MovieViewModel()
     }
 
 }

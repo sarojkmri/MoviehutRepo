@@ -13,6 +13,7 @@ import com.dev.moviehut.viewmodel.MovieViewModel
 import kotlinx.android.synthetic.main.movie_list.*
 
 class MovieListActivity : AppCompatActivity() {
+    //declare lazy injected components - viewmodel is injected lazily
     private val movieViewModel: MovieViewModel by viewModels()
     private lateinit var pagerAdapter: MoviePagerAdapter
 

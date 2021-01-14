@@ -79,6 +79,8 @@ class MovieRepository @Inject constructor(private val networkService: NetworkSer
         localDataSource: Observable<List<Movie>>,
         remoteDataSource: Observable<List<Movie>>
     ) {
+        //concat operator maintains the order of emitted data, whereas merge don't
+        //firstElement it will check the data in database for 200 ms, if no data return then call an api
         compositeDisposable.add(
             Observable.concat(localDataSource, remoteDataSource)
                 .filter { it.isNotEmpty() }

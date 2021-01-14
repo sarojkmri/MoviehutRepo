@@ -10,6 +10,7 @@ import com.dev.moviehut.utils.MovieListUtil
 import com.dev.moviehut.utils.Resource
 import javax.inject.Inject
 
+//shared view model which is shared between movie list fragment and movie details fragment
 class MovieViewModel : ViewModel() {
     @Inject
     lateinit var repository: MovieRepository
